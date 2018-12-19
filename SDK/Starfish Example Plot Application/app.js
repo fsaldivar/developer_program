@@ -28,6 +28,9 @@
 var config = {};
 var timer;
 var sf;
+var d = new Date();
+var t = d.getTime();
+console.log(t);
 
 /** Initialize the application */
 $(document).ready(function() {
@@ -132,9 +135,11 @@ function getObservations(device) {
       var newData = [];
       var newLabels = [];
       response.observations.forEach( function(obs, i) {
-        var ts = moment(obs.timestamp, moment.ISO_8601).format('hh:mm:ss');
+        var ts = moment(obs.timestamp, moment.ISO_8601).format('dd:hh:mm:ss');
         newLabels.unshift(ts);
-        newData.unshift({x: obs.timestamp, y: obs.temperature});
+		var temps = (obs.temperature-32) * 5/9
+	    newData.unshift({x: obs.timestamp, y: temps});
+		console.log(ts, obs.temperature, obs.timestamp,t,d);
       })
       config.data.labels = newLabels;
       config.data.datasets[0].data = newData;
